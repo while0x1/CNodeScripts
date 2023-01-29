@@ -1,9 +1,16 @@
-#create crontab using crontab -e and call the script every 5 days to automatically check your leaderlog block schedules
-# need to insert <your-pool-ID> & <path-to-VRF>vrf.skey in the cardano-cli section
-#Insert following into crontab -e
-# 0 17 */5 * * /<path-to-script>/leaderlog-next.sh
-
 #!/bin/bash
+
+datefile=/home/cardano/cardano-my-node/leaderDateLog.txt
+seconds=$((60*60*24*5))
+if test -f "$datefile" ; then
+        if test "$(($(date "+%s")-$(date -f "$datefile" "+%s")))"  -lt "$seconds" ; then
+                echo "5 Days has not Elapsed"
+                exit 1
+        fi
+fi
+
+date -R > "$datefile"
+
 date=$(date)
 epoch=$(cardano-cli query tip --mainnet | jq '.epoch')
 echo "Executed ${date} Epoch:${epoch}" >> leaderlog.txt
