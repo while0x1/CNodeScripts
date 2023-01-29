@@ -1,10 +1,14 @@
 #!/bin/bash
 
-datefile=/home/cardano/cardano-my-node/leaderDateLog.txt
+datefile=<path-to-date-log>/leaderDateLog.txt
+genesis=<path-to-shelley-genesis>/shelley-genesis.json
+vrf=<path-to-vrf>/vrf.skey
+export CARDANO_NODE_SOCKET_PATH=<path-to-node-socket>/db/socket
+
 seconds=$((60*60*24*5))
 if test -f "$datefile" ; then
         if test "$(($(date "+%s")-$(date -f "$datefile" "+%s")))"  -lt "$seconds" ; then
-                echo "5 Days has not Elapsed"
+#                echo "5 Days has not Elapsed"
                 exit 1
         fi
 fi
@@ -17,12 +21,10 @@ echo "Executed ${date} Epoch:${epoch}" >> leaderlog.txt
 
 cardano-cli query leadership-schedule \
    --mainnet \
-   --genesis $NODE_HOME/shelley-genesis.json \
-   --stake-pool-id <your-pool-ID> \
-   --vrf-signing-key-file <path-to-VRF>vrf.skey \
+   --genesis "$genesis" \
+   --stake-pool-id <pool-id> \
+   --vrf-signing-key-file "$vrf" \
    --next >> leaderlog.txt
-
-echo >> leaderlog.txt
 #echo "Leaderlog process complete"
 #The following will only print out leader slots in the leaderlog.txt file and will colour/arrange the output in a readable fashion
 
