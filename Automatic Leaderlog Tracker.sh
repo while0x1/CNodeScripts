@@ -16,7 +16,7 @@ cardano-cli query leadership-schedule \
    --next >> leaderlog.txt
 
 echo >> leaderlog.txt
-echo "Leaderlog process complete"
+#echo "Leaderlog process complete"
 #The following will only print out leader slots in the leaderlog.txt file and will colour/arrange the output in a readable fashion
 
 #cat leaderlog.txt | awk 'BEGIN { print  "\033[36mDate      \033[32m UTC Time\033[31m Slot"
